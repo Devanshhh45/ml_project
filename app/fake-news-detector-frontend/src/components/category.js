@@ -20,7 +20,7 @@ const CategoryContainer = () => {
 
     const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
 
-    Axios.get('http://127.0.0.1:8000/api/category/' + capitalizedCategory + '/')
+    Axios.get('https://content.guardianapis.com/search?api-key=e705adff-ca49-414e-89e2-7edede919e2e/api/category/' + capitalizedCategory + '/')
       .then((response) => {
 
         console.log('API response:', response);
@@ -28,7 +28,7 @@ const CategoryContainer = () => {
         console.log('News data:', response.data);
         console.log(response.data.length);
         
-        if (response.data.length < 10) {
+        if (response.data.length <1 ) {
 
           toast.error("Not enough data");
 

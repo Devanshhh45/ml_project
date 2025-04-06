@@ -13,14 +13,36 @@ from core.model import load_models
 import threading
 import time
 
-def get_new_news_from_api_and_update():
-    """Gets news from the guardian news using it's API"""
-    news_data = requests.get("https://content.guardianapis.com/search?api-key=e705adff-ca49-414e-89e2-7edede919e2e")
-    news_data = news_data.json()
+#def get_new_news_from_api_and_update():
+   # """Gets news from the guardian news using it's API"""
+  #  news_data = requests.get("https://content.guardianapis.com/search?api-key=e705adff-ca49-414e-89e2-7edede919e2e")
+  #  news_data = news_data.json()
 
-    news_titles = [article["webTitle"] for article in news_data["response"]["results"]]
-    news_publication_dates = [article["webPublicationDate"] for article in news_data["response"]["results"]]
-    news_categories = []
+  #  news_titles = [article["webTitle"] for article in news_data["response"]["results"]]
+  #  news_publication_dates = [article["webPublicationDate"] for article in news_data["response"]["results"]]
+  #  news_categories = []
+def get_new_news_from_api_and_update():
+    try:
+        response = requests.get("https://content.guardianapis.com/search?api-key=e705adff-ca49-414e-89e2-7edede919e2e")  # Replace with your actual API URL
+        news_data = response.json()
+
+        # Debugging: Print the response to see what's inside
+        print("Full API Response:", news_data)
+
+        # Check if "response" key exists before accessing it
+        if "response" not in news_data:
+            print("Error: 'response' key missing in API response")
+            return  # Exit function to prevent errors
+
+        # Extract news titles safely
+        news_titles = [article["webTitle"] for article in news_data["response"].get("results", [])]
+
+        return news_titles
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
     for article in news_data["response"]["results"]:
         try:
